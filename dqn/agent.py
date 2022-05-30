@@ -38,9 +38,8 @@ class Agent:
         if self.epsilon > exp:
             return np.random.randint(self.n_actions)
 
-        else:
-            state = np.expand_dims(state, axis=0)
-            return np.argmax(self.eval_model(state))
+        state = np.expand_dims(state, axis=0)
+        return np.argmax(self.eval_model(state))
 
     def update_train_model(self):
         self.target_model.set_weights(self.eval_model.parameters)

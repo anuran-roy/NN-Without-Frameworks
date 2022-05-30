@@ -87,8 +87,7 @@ class Dense(ParamLayer, ABC):
         self.input = x
         z = x.dot(self.vars["W"]) + self.vars["b"]
         self.z = z
-        a = self.act(z)
-        return a
+        return self.act(z)
 
     def backward(self, **delta):
         #  https://cs182sp21.github.io/static/slides/lec-5.pdf
@@ -145,8 +144,7 @@ class BatchNorm1d(ParamLayer, ABC):
             self.std = self.std_hat
         x_hat = (x - self.mu) / np.sqrt(self.std ** 2 + self.eps)
         self.x_hat = x_hat
-        y = self.vars["W"] * x_hat + self.vars["b"]
-        return y
+        return self.vars["W"] * x_hat + self.vars["b"]
 
     def backward(self, **delta):
         #  https://kevinzakka.github.io/2016/09/14/batch_normalization/
@@ -188,11 +186,10 @@ class Dropout(Layer, ABC):
         if not isinstance(x, np.ndarray):
             x = np.array(x)
         assert len(x.shape) > 1, "Feed the input to the network in batch mode: (batch_size, n_dims)"
-        if not eval:
-            self.mask = (np.random.rand(*x.shape) < self.p) / self.p
-            return x * self.mask
-        else:
+        if eval:
             return x
+        self.mask = (np.random.rand(*x.shape) < self.p) / self.p
+        return x * self.mask
 
     def backward(self, **delta):
         delta = delta["delta"]
@@ -531,8 +528,7 @@ class LayerNorm(ParamLayer, ABC):
 
         x_hat = (x - self.mu) / np.sqrt(self.std ** 2 + self.eps)
         self.x_hat = x_hat
-        y = self.vars["W"] * x_hat + self.vars["b"]
-        return y
+        return self.vars["W"] * x_hat + self.vars["b"]
 
     def backward(self, **delta):
         delta = delta["delta"]

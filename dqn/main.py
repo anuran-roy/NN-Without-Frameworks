@@ -27,12 +27,15 @@ env = gym.make(config["env_name"])
 num_states = env.observation_space.shape[0]
 num_actions = env.action_space.n
 
-config.update({"n_states": num_states,
-               "n_actions": num_actions,
-               "max_steps": env._max_episode_steps})
+config |= {
+    "n_states": num_states,
+    "n_actions": num_actions,
+    "max_steps": env._max_episode_steps,
+}
 
-print("Number of states:{}".format(num_states))
-print("Number of actions:{}".format(num_actions))
+
+print(f"Number of states:{num_states}")
+print(f"Number of actions:{num_actions}")
 
 
 def test_env_working():

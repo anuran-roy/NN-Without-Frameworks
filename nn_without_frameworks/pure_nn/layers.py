@@ -78,8 +78,7 @@ class Dense(ParamLayer, ABC):
             b.append(self.vars["b"][0])
         z = mat_add(z, b)
         self.z = z
-        a = self.act(z)
-        return a
+        return self.act(z)
 
     def backward(self, delta):
         dz = element_wise_mul(delta, self.act.derivative(self.z))
@@ -152,8 +151,7 @@ class BatchNorm1d(ParamLayer, ABC):
             self.gamma.append(self.vars["W"][0])
             beta.append(self.vars["b"][0])
 
-        y = mat_add(element_wise_mul(self.gamma, x_hat), beta)
-        return y
+        return mat_add(element_wise_mul(self.gamma, x_hat), beta)
 
     def backward(self, delta):
         #  https://kevinzakka.github.io/2016/09/14/batch_normalization/

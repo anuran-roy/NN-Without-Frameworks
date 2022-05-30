@@ -124,10 +124,7 @@ def equal_batch_size(a, b):
         x = b
     while len(temp) < w:
         temp.append(x[0])
-    if w0 < w1:
-        return temp, b
-    else:
-        return a, temp
+    return (temp, b) if w0 < w1 else (a, temp)
 
 
 if __name__ == "__main__":
