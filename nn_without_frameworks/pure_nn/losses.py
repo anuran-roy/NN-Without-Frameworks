@@ -64,10 +64,7 @@ class CrossEntropyLoss(LossFunc, ABC):
                isinstance(t[0], list), "target and prediction should be in batch mode: (batch_size, n_dims)"
         probs = self.soft_max(p)
         w = len(p)
-        loss = 0
-        for i in range(w):
-            loss += -math.log(probs[i][t[i][0]])
-
+        loss = sum(-math.log(probs[i][t[i][0]]) for i in range(w))
         return Loss(loss / w, self.delta)
 
     @property

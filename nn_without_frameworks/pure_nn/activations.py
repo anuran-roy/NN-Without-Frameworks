@@ -36,7 +36,7 @@ class ReLU(Activation, ABC):
         temp = [[None for _ in range(h)] for _ in range(w)]
         for i in range(w):
             for j in range(h):
-                temp[i][j] = x[i][j] if x[i][j] > 0 else 0
+                temp[i][j] = max(x[i][j], 0)
         return temp
 
     def derivative(self, x):
